@@ -58,38 +58,43 @@ def check_for_victory():
             return True
 
 def take_input():
-    game_ongoing = True
+    print('Entered')
     i = 1
     if assignment['player_1'] == 'X':
         order = [['player_1', 'X'], ['player_2', 'O']]
     else:
         order = [['player_2', 'X'], ['player_1', 'O']]
-    print(order)
-    while game_ongoing and i in range(1, 10):
+    #print(order)
+    while i in range(1, 10):
+        print('Entered 2')
         try:
             choice = int(input('Enter 1 - 9 for positions'))
             if choice in range(1, 10):
-                print(mapping)
-                print(mapping[choice][0], mapping[choice][1], order[0][1])
+                #print(mapping)
+                #print(mapping[choice][0], mapping[choice][1], order[0][1])
                 if board[mapping[choice][0]][mapping[choice][1]] is None: 
                     board[mapping[choice][0]][mapping[choice][1]] = order[0][1]
+                    draw()
+                    if check_for_victory():
+                        print('Winner is ', order[0][0])
+                        print('Game Over')
+                        return
                     temp = order[0]
                     order[0] = order[1]
                     order[1] = temp
-                    draw()
+                    if i == 9:
+                        print('Draw!')
+                        return
                 else:
                     print('Slot taken')
                     continue
-                if check_for_victory():
-                    print('Game Over')
-                    return
         except Exception as e:
             print(e)
             continue
 
 while play_again:
     assignment = assign()
-    print(assignment)
+    #print(assignment)
     while not game_over:
         take_input()
         game_over = True
@@ -97,8 +102,10 @@ while play_again:
     try:
         choice = int(input("Press 1 to play again, anything else to quit"))
         if choice == 1:
+            game_over = False
             continue
         else:
-            exit(0)
+            play_again = False
+            #exit(0)
     except Exception as e:
         print(e)
